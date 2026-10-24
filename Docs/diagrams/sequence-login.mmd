@@ -1,0 +1,28 @@
+sequenceDiagram
+    autonumber
+    actor U as User
+    participant L as FrmLogin
+    participant UD as UserDAL
+    participant DB as SQL Server
+    participant S as Session
+    participant D as FrmDashboard
+
+    U->>L: Enter username + password, press LOGIN / Enter
+    L->>L: Check fields are not empty
+    L->>UD: Login(username, password)
+    UD->>DB: EXEC sp_LoginUser @Username, @PasswordHash
+    DB-->>UD: Matching row (or none)
+    alt Credentials valid
+        UD-->>L: User object
+        L->>S: Start(user)
+        L->>D: ShowDialog()
+        D->>DB: sp_GetDashboardStats, sp_GetLowStockProducts
+        DB-->>D: Figures + low-stock list
+        D-->>U: Welcome message and live figures
+    else Credentials invalid
+        UD-->>L: null
+        L-->>U: "Invalid username or password."
+    else Database unavailable
+        UD--xL: SqlException
+        L-->>U: ErrorHandler: "Cannot connect to the database server..."
+    end

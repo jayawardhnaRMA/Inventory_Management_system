@@ -1,0 +1,89 @@
+classDiagram
+    direction TB
+
+    class IRepository~T~ {
+        <<interface>>
+        +GetAll() List~T~
+        +Search(keyword) List~T~
+        +Add(T entity) bool
+        +Update(T entity) bool
+        +Delete(int id) bool
+    }
+
+    class DataAccessBase {
+        <<abstract>>
+        -DbConnectionHelper db
+        #ExecuteQuery(procedure) DataTable
+        #ExecuteQuery(procedure, addParameters) DataTable
+        #ExecuteNonQuery(procedure, addParameters) int
+        #ReadString(row, column)$ string
+    }
+
+    class BaseDAL~T~ {
+        <<abstract>>
+        #string GetAllProcedure*
+        #string SearchProcedure*
+        #string AddProcedure*
+        #string UpdateProcedure*
+        #string DeleteProcedure*
+        #string IdParameter*
+        #MapRow(DataRow row)* T
+        #AddParameters(SqlCommand cmd, T entity)* void
+        #AddUpdateParameters(SqlCommand cmd, T entity) void
+        #MapRows(DataTable table) List~T~
+        +GetAll() List~T~
+        +Search(keyword) List~T~
+        +Add(T entity) bool
+        +Update(T entity) bool
+        +Delete(int id) bool
+    }
+
+    class ProductDAL {
+        +GetLowStock() List~Product~
+        #MapRow(row) Product
+        #AddParameters(cmd, product) void
+    }
+
+    class CustomerDAL {
+        #MapRow(row) Customer
+        #AddParameters(cmd, customer) void
+    }
+
+    class EmployeeDAL {
+        #MapRow(row) Employee
+        #AddParameters(cmd, employee) void
+        #AddUpdateParameters(cmd, employee) void
+    }
+
+    class UserDAL {
+        +Register(User user) bool
+        +Login(username, password) User?
+    }
+
+    class DashboardDAL {
+        +GetStats() DashboardStats
+    }
+
+    class DbConnectionHelper {
+        -string connectionString
+        +GetConnection() SqlConnection
+    }
+
+    class DashboardStats {
+        +int TotalProducts
+        +int LowStockProducts
+        +decimal StockValue
+        +int TotalCustomers
+        +int ActiveEmployees
+        +int TotalEmployees
+    }
+
+    IRepository~T~ <|.. BaseDAL~T~
+    DataAccessBase <|-- BaseDAL~T~
+    DataAccessBase <|-- UserDAL
+    DataAccessBase <|-- DashboardDAL
+    BaseDAL~T~ <|-- ProductDAL : T = Product
+    BaseDAL~T~ <|-- CustomerDAL : T = Customer
+    BaseDAL~T~ <|-- EmployeeDAL : T = Employee
+    DataAccessBase *-- DbConnectionHelper
+    DashboardDAL ..> DashboardStats : creates

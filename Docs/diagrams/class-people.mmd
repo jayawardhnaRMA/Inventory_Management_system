@@ -1,0 +1,78 @@
+classDiagram
+    direction TB
+
+    class Entity {
+        <<abstract>>
+        +int Id
+        +bool IsNew
+        +Validate()* void
+    }
+
+    class Person {
+        <<abstract>>
+        -string _name
+        +string Name
+        +GetRole()* string
+        +Validate() void
+        +ToString() string
+    }
+
+    class IContactable {
+        <<interface>>
+        +string Phone
+        +string Email
+    }
+
+    class Customer {
+        -string _phone
+        -string _email
+        -string _address
+        +string Phone
+        +string Email
+        +string Address
+        +Customer()
+        +Customer(name, phone, email, address)
+        +GetRole() string
+    }
+
+    class Employee {
+        -string _gender
+        -string _phone
+        -string _email
+        -string _jobTitle
+        -decimal _salary
+        -DateTime _hireDate
+        +string Gender
+        +string Phone
+        +string Email
+        +string JobTitle
+        +decimal Salary
+        +DateTime HireDate
+        +bool IsActive
+        +Employee()
+        +Employee(name, gender, phone, email, jobTitle, salary, hireDate, isActive)
+        +GetRole() string
+    }
+
+    class User {
+        -string _username
+        -string _password
+        -string _role
+        +string Username
+        +string Password
+        +string Role
+        +User()
+        +User(fullName, username, password, role)
+        +GetRole() string
+        +Validate() void
+    }
+
+
+
+
+    Entity <|-- Person
+    Person <|-- Customer
+    Person <|-- Employee
+    Person <|-- User
+    Customer ..|> IContactable
+    Employee ..|> IContactable

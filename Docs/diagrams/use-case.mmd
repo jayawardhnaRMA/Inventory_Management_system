@@ -1,0 +1,24 @@
+flowchart LR
+    Staff(["👤 Staff"])
+    Manager(["👤 Manager"])
+    Admin(["👤 Admin"])
+
+    subgraph SYS["Shop Inventory Management System"]
+        direction TB
+        UC1([Sign up])
+        UC2([Log in / Log out])
+        UC3([View dashboard and low-stock alerts])
+        UC4([Manage products<br/>add · update · delete · search])
+        UC5([Manage customers<br/>add · update · delete · search])
+        UC6([Manage employees<br/>add · update · delete · search])
+    end
+
+    Staff --- UC1
+    Staff --- UC2
+    Staff --- UC3
+    Staff --- UC4
+    Staff --- UC5
+    Manager --- UC6
+    Admin --- UC6
+    Manager -. "inherits Staff use cases" .-> Staff
+    Admin -. "inherits Staff use cases" .-> Staff

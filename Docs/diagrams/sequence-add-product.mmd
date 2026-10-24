@@ -1,0 +1,24 @@
+sequenceDiagram
+    autonumber
+    actor U as User
+    participant F as FrmProducts
+    participant P as Product
+    participant R as ProductDAL<br/>(IRepository#lt;Product#gt;)
+    participant DB as SQL Server
+
+    U->>F: Fill in fields, click ADD
+    F->>F: decimal.Parse / int.Parse
+    F->>P: new Product(name, category, price, qty, reorder, supplier)
+    P->>P: Property setters validate values
+    F->>R: Add(product)
+    R->>P: Validate()
+    R->>DB: EXEC sp_AddProduct @ProductName, @UnitPrice, ...
+    DB-->>R: 1 row affected
+    R-->>F: true
+    F->>R: GetAll()
+    R->>DB: EXEC sp_GetAllProducts
+    DB-->>R: Rows
+    R-->>F: List of Product objects
+    F-->>U: "Product added successfully." + refreshed grid
+
+    Note over F,P: Errors are caught separately in FrmProducts:<br/>FormatException (e.g. "abc" as price),<br/>ValidationException (e.g. negative price),<br/>SqlException (database problem)

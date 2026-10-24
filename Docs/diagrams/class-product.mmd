@@ -1,0 +1,41 @@
+classDiagram
+    direction TB
+
+    class Entity {
+        <<abstract>>
+        +int Id
+        +bool IsNew
+        +Validate()* void
+    }
+
+    class Product {
+        -string _name
+        -string _category
+        -decimal _unitPrice
+        -int _quantityInStock
+        -int _reorderLevel
+        -string _supplierName
+        +string Name
+        +string Category
+        +decimal UnitPrice
+        +int QuantityInStock
+        +int ReorderLevel
+        +string SupplierName
+        +bool IsLowStock
+        +Product()
+        +Product(name, category, unitPrice, qty, reorderLevel, supplier)
+        +Validate() void
+        +ToString() string
+    }
+
+    class ValidationException {
+        +string? PropertyName
+        +ValidationException(message)
+        +ValidationException(propertyName, message)
+    }
+
+    class Exception
+
+    Entity <|-- Product
+    Exception <|-- ValidationException
+    Product ..> ValidationException : setters throw on invalid data

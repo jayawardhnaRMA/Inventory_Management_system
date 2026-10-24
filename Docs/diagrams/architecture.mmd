@@ -1,0 +1,47 @@
+flowchart TB
+    User(["👤 User<br/>keyboard and mouse"])
+
+    subgraph UI["Presentation layer — Windows Forms"]
+        direction LR
+        F1[FrmLogin]
+        F2[FrmSignup]
+        F3[FrmDashboard]
+        F4[FrmProducts]
+        F5[FrmCustomers]
+        F6[FrmEmployees]
+    end
+
+    subgraph HELP["Helpers"]
+        direction LR
+        H1["Session<br/>(logged-in user, role)"]
+        H2["ErrorHandler<br/>(messages + error.log)"]
+        H3["GridHelper<br/>(bind lists to grids)"]
+    end
+
+    subgraph MODEL["Model layer — business objects"]
+        direction LR
+        M1["Entity / Person<br/>(abstract)"]
+        M2["Product · Customer<br/>Employee · User"]
+        M3["ValidationException"]
+    end
+
+    subgraph DAL["Data access layer"]
+        direction LR
+        D1["IRepository&lt;T&gt;"]
+        D2["BaseDAL&lt;T&gt; / DataAccessBase"]
+        D3["ProductDAL · CustomerDAL · EmployeeDAL<br/>UserDAL · DashboardDAL"]
+    end
+
+    subgraph DB["SQL Server Express — ShopManagementDB"]
+        direction LR
+        S1["19 stored procedures<br/>sp_AddProduct, sp_LoginUser, ..."]
+        S2[("Tables<br/>Users · Products<br/>Customers · Employees")]
+    end
+
+    User --> UI
+    UI --> HELP
+    UI -- "create / read objects" --> MODEL
+    UI -- "calls through IRepository&lt;T&gt;" --> DAL
+    DAL -- "maps rows to objects" --> MODEL
+    DAL -- "Microsoft.Data.SqlClient" --> S1
+    S1 --> S2

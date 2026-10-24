@@ -1,0 +1,39 @@
+erDiagram
+    Users {
+        INT UserID PK "IDENTITY"
+        NVARCHAR(100) FullName "NOT NULL"
+        NVARCHAR(50) Username UK "NOT NULL"
+        NVARCHAR(255) PasswordHash "NOT NULL"
+        NVARCHAR(30) UserRole "Admin / Manager / Staff"
+        DATETIME CreatedAt "DEFAULT GETDATE()"
+    }
+
+    Products {
+        INT ProductID PK "IDENTITY"
+        NVARCHAR(100) ProductName "NOT NULL"
+        NVARCHAR(50) Category
+        DECIMAL UnitPrice "(10,2) NOT NULL"
+        INT QuantityInStock "DEFAULT 0"
+        INT ReorderLevel "DEFAULT 0"
+        NVARCHAR(100) SupplierName
+    }
+
+    Customers {
+        INT CustomerID PK "IDENTITY"
+        NVARCHAR(100) CustomerName "NOT NULL"
+        NVARCHAR(20) Phone
+        NVARCHAR(100) Email
+        NVARCHAR(255) Address
+    }
+
+    Employees {
+        INT EmployeeID PK "IDENTITY"
+        NVARCHAR(100) EmployeeName "NOT NULL"
+        NVARCHAR(10) Gender
+        NVARCHAR(20) Phone
+        NVARCHAR(100) Email
+        NVARCHAR(50) JobTitle
+        DECIMAL Salary "(10,2) DEFAULT 0"
+        DATE HireDate "NOT NULL"
+        BIT IsActive "DEFAULT 1"
+    }
