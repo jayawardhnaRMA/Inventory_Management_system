@@ -1,7 +1,7 @@
 {
-  "version": 3,
+  "version": 4,
   "targets": {
-    "net10.0-windows7.0": {
+    "net10.0-windows": {
       "Microsoft.Bcl.Cryptography/9.0.13": {
         "type": "package",
         "compile": {
@@ -1120,36 +1120,34 @@
     }
   },
   "projectFileDependencyGroups": {
-    "net10.0-windows7.0": [
+    "net10.0-windows": [
       "Microsoft.Data.SqlClient >= 7.0.0",
       "System.Data.SqlClient >= 4.9.1"
     ]
   },
   "packageFolders": {
-    "C:\\Users\\yeshi\\.nuget\\packages\\": {}
+    "C:\\Users\\osand\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\yeshi\\source\\repos\\warehouse\\warehouse\\warehouse\\warehouse.csproj",
+      "projectUniqueName": "C:\\Users\\osand\\Desktop\\CS107.3 Object Oriented Programming with C#\\Inventory_Management_system\\warehouse.csproj",
       "projectName": "warehouse",
-      "projectPath": "C:\\Users\\yeshi\\source\\repos\\warehouse\\warehouse\\warehouse\\warehouse.csproj",
-      "packagesPath": "C:\\Users\\yeshi\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\yeshi\\source\\repos\\warehouse\\warehouse\\warehouse\\obj\\",
+      "projectPath": "C:\\Users\\osand\\Desktop\\CS107.3 Object Oriented Programming with C#\\Inventory_Management_system\\warehouse.csproj",
+      "packagesPath": "C:\\Users\\osand\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\osand\\Desktop\\CS107.3 Object Oriented Programming with C#\\Inventory_Management_system\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\yeshi\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "C:\\Users\\osand\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net10.0-windows"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
-        "net10.0-windows7.0": {
+        "net10.0-windows": {
           "framework": "net10.0-windows7.0",
           "targetAlias": "net10.0-windows",
           "projectReferences": {}
@@ -1165,10 +1163,10 @@
         "auditLevel": "low",
         "auditMode": "all"
       },
-      "SdkAnalysisLevel": "10.0.200"
+      "SdkAnalysisLevel": "10.0.400"
     },
     "frameworks": {
-      "net10.0-windows7.0": {
+      "net10.0-windows": {
         "framework": "net10.0-windows7.0",
         "targetAlias": "net10.0-windows",
         "dependencies": {
@@ -1200,7 +1198,7 @@
             "privateAssets": "none"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.201/PortableRuntimeIdentifierGraph.json",
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.402/PortableRuntimeIdentifierGraph.json",
         "packagesToPrune": {
           "Microsoft.CSharp": "(,4.7.32767]",
           "Microsoft.VisualBasic": "(,10.4.32767]",
