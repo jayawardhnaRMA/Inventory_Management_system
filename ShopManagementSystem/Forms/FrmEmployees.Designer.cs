@@ -78,7 +78,7 @@
             dgvEmployees.RowHeadersWidth = 51;
             dgvEmployees.Size = new Size(1187, 199);
             dgvEmployees.TabIndex = 1;
-            dgvEmployees.CellContentClick += dataGridView1_CellContentClick;
+            dgvEmployees.CellClick += dataGridView1_CellContentClick;
             // 
             // label2
             // 

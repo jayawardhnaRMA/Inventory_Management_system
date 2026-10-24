@@ -1,102 +1,51 @@
 ﻿using System;
 using System.Data;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
+using ShopManagementSystem.Models;
 
 namespace ShopManagementSystem.DataAccess
 {
-    public class EmployeeDAL
+    public class EmployeeDAL : BaseDAL<Employee>
     {
-        DbConnectionHelper db = new DbConnectionHelper();
+        protected override string GetAllProcedure => "sp_GetAllEmployees";
+        protected override string SearchProcedure => "sp_SearchEmployees";
+        protected override string AddProcedure => "sp_AddEmployee";
+        protected override string UpdateProcedure => "sp_UpdateEmployee";
+        protected override string DeleteProcedure => "sp_DeleteEmployee";
+        protected override string IdParameter => "@EmployeeID";
 
-        public DataTable GetAllEmployees()
+        protected override Employee MapRow(DataRow row)
         {
-            using (SqlConnection con = db.GetConnection())
+            return new Employee
             {
-                using (SqlCommand cmd = new SqlCommand("sp_GetAllEmployees", con))
-                {
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    SqlDataAdapter da = new SqlDataAdapter(cmd);
-                    DataTable dt = new DataTable();
-                    da.Fill(dt);
-                    return dt;
-                }
-            }
+                Id = Convert.ToInt32(row["EmployeeID"]),
+                Name = ReadString(row, "EmployeeName"),
+                Gender = ReadString(row, "Gender"),
+                Phone = ReadString(row, "Phone"),
+                Email = ReadString(row, "Email"),
+                JobTitle = ReadString(row, "JobTitle"),
+                Salary = Convert.ToDecimal(row["Salary"]),
+                HireDate = Convert.ToDateTime(row["HireDate"]),
+                IsActive = Convert.ToBoolean(row["IsActive"])
+            };
         }
 
-        public bool AddEmployee(string name, string gender, string phone, string email, string jobTitle, decimal salary, DateTime hireDate)
+        protected override void AddParameters(SqlCommand cmd, Employee employee)
         {
-            using (SqlConnection con = db.GetConnection())
-            {
-                using (SqlCommand cmd = new SqlCommand("sp_AddEmployee", con))
-                {
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@EmployeeName", name);
-                    cmd.Parameters.AddWithValue("@Gender", gender);
-                    cmd.Parameters.AddWithValue("@Phone", phone);
-                    cmd.Parameters.AddWithValue("@Email", email);
-                    cmd.Parameters.AddWithValue("@JobTitle", jobTitle);
-                    cmd.Parameters.AddWithValue("@Salary", salary);
-                    cmd.Parameters.AddWithValue("@HireDate", hireDate);
-
-                    con.Open();
-                    return cmd.ExecuteNonQuery() > 0;
-                }
-            }
+            cmd.Parameters.AddWithValue("@EmployeeName", employee.Name);
+            cmd.Parameters.AddWithValue("@Gender", employee.Gender);
+            cmd.Parameters.AddWithValue("@Phone", employee.Phone);
+            cmd.Parameters.AddWithValue("@Email", employee.Email);
+            cmd.Parameters.AddWithValue("@JobTitle", employee.JobTitle);
+            cmd.Parameters.AddWithValue("@Salary", employee.Salary);
+            cmd.Parameters.AddWithValue("@HireDate", employee.HireDate);
         }
 
-        public bool UpdateEmployee(int id, string name, string gender, string phone, string email, string jobTitle, decimal salary, DateTime hireDate, bool isActive)
+        // sp_UpdateEmployee also takes the active flag, which sp_AddEmployee does not.
+        protected override void AddUpdateParameters(SqlCommand cmd, Employee employee)
         {
-            using (SqlConnection con = db.GetConnection())
-            {
-                using (SqlCommand cmd = new SqlCommand("sp_UpdateEmployee", con))
-                {
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@EmployeeID", id);
-                    cmd.Parameters.AddWithValue("@EmployeeName", name);
-                    cmd.Parameters.AddWithValue("@Gender", gender);
-                    cmd.Parameters.AddWithValue("@Phone", phone);
-                    cmd.Parameters.AddWithValue("@Email", email);
-                    cmd.Parameters.AddWithValue("@JobTitle", jobTitle);
-                    cmd.Parameters.AddWithValue("@Salary", salary);
-                    cmd.Parameters.AddWithValue("@HireDate", hireDate);
-                    cmd.Parameters.AddWithValue("@IsActive", isActive);
-
-                    con.Open();
-                    return cmd.ExecuteNonQuery() > 0;
-                }
-            }
-        }
-
-        public bool DeleteEmployee(int id)
-        {
-            using (SqlConnection con = db.GetConnection())
-            {
-                using (SqlCommand cmd = new SqlCommand("sp_DeleteEmployee", con))
-                {
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@EmployeeID", id);
-
-                    con.Open();
-                    return cmd.ExecuteNonQuery() > 0;
-                }
-            }
-        }
-
-        public DataTable SearchEmployees(string keyword)
-        {
-            using (SqlConnection con = db.GetConnection())
-            {
-                using (SqlCommand cmd = new SqlCommand("sp_SearchEmployees", con))
-                {
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@Keyword", keyword);
-
-                    SqlDataAdapter da = new SqlDataAdapter(cmd);
-                    DataTable dt = new DataTable();
-                    da.Fill(dt);
-                    return dt;
-                }
-            }
+            base.AddUpdateParameters(cmd, employee);
+            cmd.Parameters.AddWithValue("@IsActive", employee.IsActive);
         }
     }
 }

@@ -1,94 +1,37 @@
-﻿using System.Data;
-using System.Data.SqlClient;
+﻿using System;
+using System.Data;
+using Microsoft.Data.SqlClient;
+using ShopManagementSystem.Models;
 
 namespace ShopManagementSystem.DataAccess
 {
-    public class CustomerDAL
+    public class CustomerDAL : BaseDAL<Customer>
     {
-        DbConnectionHelper db = new DbConnectionHelper();
+        protected override string GetAllProcedure => "sp_GetAllCustomers";
+        protected override string SearchProcedure => "sp_SearchCustomers";
+        protected override string AddProcedure => "sp_AddCustomer";
+        protected override string UpdateProcedure => "sp_UpdateCustomer";
+        protected override string DeleteProcedure => "sp_DeleteCustomer";
+        protected override string IdParameter => "@CustomerID";
 
-        public DataTable GetAllCustomers()
+        protected override Customer MapRow(DataRow row)
         {
-            using (SqlConnection con = db.GetConnection())
+            return new Customer
             {
-                using (SqlCommand cmd = new SqlCommand("sp_GetAllCustomers", con))
-                {
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    SqlDataAdapter da = new SqlDataAdapter(cmd);
-                    DataTable dt = new DataTable();
-                    da.Fill(dt);
-                    return dt;
-                }
-            }
+                Id = Convert.ToInt32(row["CustomerID"]),
+                Name = ReadString(row, "CustomerName"),
+                Phone = ReadString(row, "Phone"),
+                Email = ReadString(row, "Email"),
+                Address = ReadString(row, "Address")
+            };
         }
 
-        public bool AddCustomer(string name, string phone, string email, string address)
+        protected override void AddParameters(SqlCommand cmd, Customer customer)
         {
-            using (SqlConnection con = db.GetConnection())
-            {
-                using (SqlCommand cmd = new SqlCommand("sp_AddCustomer", con))
-                {
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@CustomerName", name);
-                    cmd.Parameters.AddWithValue("@Phone", phone);
-                    cmd.Parameters.AddWithValue("@Email", email);
-                    cmd.Parameters.AddWithValue("@Address", address);
-
-                    con.Open();
-                    return cmd.ExecuteNonQuery() > 0;
-                }
-            }
-        }
-
-        public bool UpdateCustomer(int id, string name, string phone, string email, string address)
-        {
-            using (SqlConnection con = db.GetConnection())
-            {
-                using (SqlCommand cmd = new SqlCommand("sp_UpdateCustomer", con))
-                {
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@CustomerID", id);
-                    cmd.Parameters.AddWithValue("@CustomerName", name);
-                    cmd.Parameters.AddWithValue("@Phone", phone);
-                    cmd.Parameters.AddWithValue("@Email", email);
-                    cmd.Parameters.AddWithValue("@Address", address);
-
-                    con.Open();
-                    return cmd.ExecuteNonQuery() > 0;
-                }
-            }
-        }
-
-        public bool DeleteCustomer(int id)
-        {
-            using (SqlConnection con = db.GetConnection())
-            {
-                using (SqlCommand cmd = new SqlCommand("sp_DeleteCustomer", con))
-                {
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@CustomerID", id);
-
-                    con.Open();
-                    return cmd.ExecuteNonQuery() > 0;
-                }
-            }
-        }
-
-        public DataTable SearchCustomers(string keyword)
-        {
-            using (SqlConnection con = db.GetConnection())
-            {
-                using (SqlCommand cmd = new SqlCommand("sp_SearchCustomers", con))
-                {
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@Keyword", keyword);
-
-                    SqlDataAdapter da = new SqlDataAdapter(cmd);
-                    DataTable dt = new DataTable();
-                    da.Fill(dt);
-                    return dt;
-                }
-            }
+            cmd.Parameters.AddWithValue("@CustomerName", customer.Name);
+            cmd.Parameters.AddWithValue("@Phone", customer.Phone);
+            cmd.Parameters.AddWithValue("@Email", customer.Email);
+            cmd.Parameters.AddWithValue("@Address", customer.Address);
         }
     }
 }

@@ -6,14 +6,16 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using ShopManagementSystem.DataAccess;
+using ShopManagementSystem.Helpers;
+using ShopManagementSystem.Models;
 
 
 namespace warehouse.NewFolder.Forms
 {
     public partial class FrmCustomers : Form
     {
-        CustomerDAL customerDAL = new CustomerDAL();
-        int selectedCustomerId = 0;
+        private readonly IRepository<Customer> customerRepository = new CustomerDAL();
+        private int selectedCustomerId = 0;
         public FrmCustomers()
         {
             InitializeComponent();
@@ -25,7 +27,24 @@ namespace warehouse.NewFolder.Forms
         }
         private void LoadCustomers()
         {
-            dgvCustomers.DataSource = customerDAL.GetAllCustomers();
+            GridHelper.Bind(dgvCustomers, customerRepository.GetAll());
+        }
+
+        private Customer ReadCustomerFromForm()
+        {
+            return new Customer(txtCustomerName.Text, txtPhone.Text, txtEmail.Text, txtAddress.Text);
+        }
+
+        private void dgvCustomers_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0 && dgvCustomers.Rows[e.RowIndex].DataBoundItem is Customer customer)
+            {
+                selectedCustomerId = customer.Id;
+                txtCustomerName.Text = customer.Name;
+                txtPhone.Text = customer.Phone;
+                txtEmail.Text = customer.Email;
+                txtAddress.Text = customer.Address;
+            }
         }
 
         private void txtCustomerName_TextChanged(object sender, EventArgs e)
@@ -35,7 +54,7 @@ namespace warehouse.NewFolder.Forms
 
         private void btnSearch_Click(object sender, EventArgs e)
         {
-            dgvCustomers.DataSource = customerDAL.SearchCustomers(txtSearch.Text.Trim());
+            GridHelper.Bind(dgvCustomers, customerRepository.Search(txtSearch.Text.Trim()));
 
         }
 
@@ -43,12 +62,7 @@ namespace warehouse.NewFolder.Forms
         {
             try
             {
-                bool result = customerDAL.AddCustomer(
-                    txtCustomerName.Text.Trim(),
-                    txtPhone.Text.Trim(),
-                    txtEmail.Text.Trim(),
-                    txtAddress.Text.Trim()
-                );
+                bool result = customerRepository.Add(ReadCustomerFromForm());
 
                 if (result)
                 {
@@ -74,13 +88,9 @@ namespace warehouse.NewFolder.Forms
                     return;
                 }
 
-                bool result = customerDAL.UpdateCustomer(
-                    selectedCustomerId,
-                    txtCustomerName.Text.Trim(),
-                    txtPhone.Text.Trim(),
-                    txtEmail.Text.Trim(),
-                    txtAddress.Text.Trim()
-                );
+                Customer customer = ReadCustomerFromForm();
+                customer.Id = selectedCustomerId;
+                bool result = customerRepository.Update(customer);
 
                 if (result)
                 {
@@ -108,7 +118,7 @@ namespace warehouse.NewFolder.Forms
                 DialogResult dr = MessageBox.Show("Are you sure?", "Confirm", MessageBoxButtons.YesNo);
                 if (dr == DialogResult.Yes)
                 {
-                    bool result = customerDAL.DeleteCustomer(selectedCustomerId);
+                    bool result = customerRepository.Delete(selectedCustomerId);
                     if (result)
                     {
                         MessageBox.Show("Customer deleted.");

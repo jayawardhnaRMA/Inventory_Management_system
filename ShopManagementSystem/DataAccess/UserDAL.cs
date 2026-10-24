@@ -1,61 +1,45 @@
 ﻿using System;
 using System.Data;
-using System.Data.SqlClient;
+using ShopManagementSystem.Models;
 
 namespace ShopManagementSystem.DataAccess
 {
-    public class UserDAL
+    // Users are not managed through CRUD screens, so this class only needs the shared
+    // database plumbing from DataAccessBase, not the full repository.
+    public class UserDAL : DataAccessBase
     {
-        DbConnectionHelper db = new DbConnectionHelper();
-
-        public bool RegisterUser(string fullName, string username, string password, string role)
+        public bool Register(User user)
         {
-            try
+            user.Validate();
+            return ExecuteNonQuery("sp_RegisterUser", cmd =>
             {
-                using (SqlConnection con = db.GetConnection())
-                {
-                    using (SqlCommand cmd = new SqlCommand("sp_RegisterUser", con))
-                    {
-                        cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.AddWithValue("@FullName", fullName);
-                        cmd.Parameters.AddWithValue("@Username", username);
-                        cmd.Parameters.AddWithValue("@PasswordHash", password);
-                        cmd.Parameters.AddWithValue("@UserRole", role);
-
-                        con.Open();
-                        int rows = cmd.ExecuteNonQuery();
-                        return rows > 0;
-                    }
-                }
-            }
-            catch
-            {
-                throw;
-            }
+                cmd.Parameters.AddWithValue("@FullName", user.Name);
+                cmd.Parameters.AddWithValue("@Username", user.Username);
+                cmd.Parameters.AddWithValue("@PasswordHash", user.Password);
+                cmd.Parameters.AddWithValue("@UserRole", user.Role);
+            }) > 0;
         }
 
-        public bool LoginUser(string username, string password)
+        // Returns the matching user, or null when the username/password is wrong.
+        public User? Login(string username, string password)
         {
-            try
+            DataTable result = ExecuteQuery("sp_LoginUser", cmd =>
             {
-                using (SqlConnection con = db.GetConnection())
-                {
-                    using (SqlCommand cmd = new SqlCommand("sp_LoginUser", con))
-                    {
-                        cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.AddWithValue("@Username", username);
-                        cmd.Parameters.AddWithValue("@PasswordHash", password);
+                cmd.Parameters.AddWithValue("@Username", username);
+                cmd.Parameters.AddWithValue("@PasswordHash", password);
+            });
 
-                        con.Open();
-                        SqlDataReader reader = cmd.ExecuteReader();
-                        return reader.HasRows;
-                    }
-                }
-            }
-            catch
+            if (result.Rows.Count == 0)
+                return null;
+
+            DataRow row = result.Rows[0];
+            return new User
             {
-                throw;
-            }
+                Id = Convert.ToInt32(row["UserID"]),
+                Name = ReadString(row, "FullName"),
+                Username = ReadString(row, "Username"),
+                Role = ReadString(row, "UserRole")
+            };
         }
     }
 }

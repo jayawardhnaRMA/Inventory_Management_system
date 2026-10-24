@@ -1,4 +1,5 @@
 ﻿using ShopManagementSystem.DataAccess;
+using ShopManagementSystem.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -44,11 +45,11 @@ namespace warehouse.ShopManagementSystem.Forms
                     return;
                 }
 
-                bool isValid = userDAL.LoginUser(txtUsername.Text.Trim(), txtPassword.Text.Trim());
+                User? user = userDAL.Login(txtUsername.Text.Trim(), txtPassword.Text.Trim());
 
-                if (isValid)
+                if (user != null)
                 {
-                    MessageBox.Show("Login successful.");
+                    MessageBox.Show($"Login successful. Welcome, {user.Name}!");
                     FrmDashboard dashboard = new FrmDashboard();
                     dashboard.Show();
                     this.Hide();

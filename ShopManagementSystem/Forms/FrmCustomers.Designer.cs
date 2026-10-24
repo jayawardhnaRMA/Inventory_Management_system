@@ -77,6 +77,7 @@
             dgvCustomers.RowHeadersWidth = 51;
             dgvCustomers.Size = new Size(813, 289);
             dgvCustomers.TabIndex = 1;
+            dgvCustomers.CellClick += dgvCustomers_CellClick;
             // 
             // label2
             // 

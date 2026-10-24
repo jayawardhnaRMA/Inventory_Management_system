@@ -1,4 +1,6 @@
 ﻿using ShopManagementSystem.DataAccess;
+using ShopManagementSystem.Helpers;
+using ShopManagementSystem.Models;
 using System;
 using System.Windows.Forms;
 
@@ -6,8 +8,8 @@ namespace warehouse.NewFolder.Forms
 {
     public partial class FrmProducts : Form
     {
-        ProductDAL productDAL = new ProductDAL();
-        int selectedProductId = 0;
+        private readonly IRepository<Product> productRepository = new ProductDAL();
+        private int selectedProductId = 0;
 
         public FrmProducts()
         {
@@ -16,7 +18,20 @@ namespace warehouse.NewFolder.Forms
 
         private void LoadProducts()
         {
-            dgvProducts.DataSource = productDAL.GetAllProducts();
+            GridHelper.Bind(dgvProducts, productRepository.GetAll());
+        }
+
+        // Builds a Product object from the textboxes; the model validates the values.
+        private Product ReadProductFromForm()
+        {
+            return new Product(
+                txtProductName.Text,
+                txtCategory.Text,
+                decimal.Parse(txtPrice.Text.Trim()),
+                int.Parse(txtQuantity.Text.Trim()),
+                int.Parse(txtReorderLevel.Text.Trim()),
+                txtSupplier.Text
+            );
         }
 
         private void FrmProducts_Load(object sender, EventArgs e)
@@ -54,21 +69,14 @@ namespace warehouse.NewFolder.Forms
 
         private void btnSearch_Click(object sender, EventArgs e)
         {
-            dgvProducts.DataSource = productDAL.SearchProducts(txtSearch.Text.Trim());
+            GridHelper.Bind(dgvProducts, productRepository.Search(txtSearch.Text.Trim()));
         }
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
             try
             {
-                bool result = productDAL.AddProduct(
-                    txtProductName.Text.Trim(),
-                    txtCategory.Text.Trim(),
-                    decimal.Parse(txtPrice.Text.Trim()),
-                    int.Parse(txtQuantity.Text.Trim()),
-                    int.Parse(txtReorderLevel.Text.Trim()),
-                    txtSupplier.Text.Trim()
-                );
+                bool result = productRepository.Add(ReadProductFromForm());
 
                 if (result)
                 {
@@ -93,15 +101,9 @@ namespace warehouse.NewFolder.Forms
                     return;
                 }
 
-                bool result = productDAL.UpdateProduct(
-                    selectedProductId,
-                    txtProductName.Text.Trim(),
-                    txtCategory.Text.Trim(),
-                    decimal.Parse(txtPrice.Text.Trim()),
-                    int.Parse(txtQuantity.Text.Trim()),
-                    int.Parse(txtReorderLevel.Text.Trim()),
-                    txtSupplier.Text.Trim()
-                );
+                Product product = ReadProductFromForm();
+                product.Id = selectedProductId;
+                bool result = productRepository.Update(product);
 
                 if (result)
                 {
@@ -129,7 +131,7 @@ namespace warehouse.NewFolder.Forms
                 DialogResult dr = MessageBox.Show("Are you sure?", "Confirm", MessageBoxButtons.YesNo);
                 if (dr == DialogResult.Yes)
                 {
-                    bool result = productDAL.DeleteProduct(selectedProductId);
+                    bool result = productRepository.Delete(selectedProductId);
                     if (result)
                     {
                         MessageBox.Show("Product deleted.");
@@ -156,16 +158,15 @@ namespace warehouse.NewFolder.Forms
 
         private void dgvProducts_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex >= 0)
+            if (e.RowIndex >= 0 && dgvProducts.Rows[e.RowIndex].DataBoundItem is Product product)
             {
-                DataGridViewRow row = dgvProducts.Rows[e.RowIndex];
-                selectedProductId = Convert.ToInt32(row.Cells["ProductID"].Value);
-                txtProductName.Text = row.Cells["ProductName"].Value.ToString();
-                txtCategory.Text = row.Cells["Category"].Value.ToString();
-                txtPrice.Text = row.Cells["UnitPrice"].Value.ToString();
-                txtQuantity.Text = row.Cells["QuantityInStock"].Value.ToString();
-                txtReorderLevel.Text = row.Cells["ReorderLevel"].Value.ToString();
-                txtSupplier.Text = row.Cells["SupplierName"].Value.ToString();
+                selectedProductId = product.Id;
+                txtProductName.Text = product.Name;
+                txtCategory.Text = product.Category;
+                txtPrice.Text = product.UnitPrice.ToString();
+                txtQuantity.Text = product.QuantityInStock.ToString();
+                txtReorderLevel.Text = product.ReorderLevel.ToString();
+                txtSupplier.Text = product.SupplierName;
             }
         }
 

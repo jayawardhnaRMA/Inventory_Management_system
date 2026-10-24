@@ -1,4 +1,5 @@
 ﻿using ShopManagementSystem.DataAccess;
+using ShopManagementSystem.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -48,12 +49,8 @@ namespace warehouse.ShopManagementSystem.Forms
                     return;
                 }
 
-                bool result = userDAL.RegisterUser(
-                    txtFullName.Text.Trim(),
-                    txtUsername.Text.Trim(),
-                    txtPassword.Text.Trim(),
-                    cmbRole.Text
-                );
+                User user = new User(txtFullName.Text, txtUsername.Text, txtPassword.Text, cmbRole.Text);
+                bool result = userDAL.Register(user);
 
                 if (result)
                 {

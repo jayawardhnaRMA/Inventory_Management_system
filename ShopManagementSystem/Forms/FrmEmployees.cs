@@ -6,13 +6,15 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using ShopManagementSystem.DataAccess;
+using ShopManagementSystem.Helpers;
+using ShopManagementSystem.Models;
 
 namespace warehouse.NewFolder.Forms
 {
     public partial class FrmEmployees : Form
     {
-        EmployeeDAL employeeDAL = new EmployeeDAL();
-        int selectedEmployeeId = 0;
+        private readonly IRepository<Employee> employeeRepository = new EmployeeDAL();
+        private int selectedEmployeeId = 0;
 
         public FrmEmployees()
         {
@@ -20,46 +22,51 @@ namespace warehouse.NewFolder.Forms
         }
         private void LoadEmployees()
         {
-            dgvEmployees.DataSource = employeeDAL.GetAllEmployees();
+            GridHelper.Bind(dgvEmployees, employeeRepository.GetAll());
+        }
+
+        private Employee ReadEmployeeFromForm()
+        {
+            return new Employee(
+                txtEmployeeName.Text,
+                cmbGender.Text,
+                txtPhone.Text,
+                txtEmail.Text,
+                txtJobTitle.Text,
+                decimal.Parse(txtSalary.Text.Trim()),
+                dtpHireDate.Value.Date,
+                chkIsActive.Checked
+            );
         }
 
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
-            if (e.RowIndex >= 0)
+            if (e.RowIndex >= 0 && dgvEmployees.Rows[e.RowIndex].DataBoundItem is Employee employee)
             {
-                DataGridViewRow row = dgvEmployees.Rows[e.RowIndex];
-                selectedEmployeeId = Convert.ToInt32(row.Cells["EmployeeID"].Value);
-                txtEmployeeName.Text = row.Cells["EmployeeName"].Value.ToString();
-                cmbGender.Text = row.Cells["Gender"].Value.ToString();
-                txtPhone.Text = row.Cells["Phone"].Value.ToString();
-                txtEmail.Text = row.Cells["Email"].Value.ToString();
-                txtJobTitle.Text = row.Cells["JobTitle"].Value.ToString();
-                txtSalary.Text = row.Cells["Salary"].Value.ToString();
-                dtpHireDate.Value = Convert.ToDateTime(row.Cells["HireDate"].Value);
-                chkIsActive.Checked = Convert.ToBoolean(row.Cells["IsActive"].Value);
+                selectedEmployeeId = employee.Id;
+                txtEmployeeName.Text = employee.Name;
+                cmbGender.Text = employee.Gender;
+                txtPhone.Text = employee.Phone;
+                txtEmail.Text = employee.Email;
+                txtJobTitle.Text = employee.JobTitle;
+                txtSalary.Text = employee.Salary.ToString();
+                dtpHireDate.Value = employee.HireDate;
+                chkIsActive.Checked = employee.IsActive;
             }
         }
 
         private void button5_Click(object sender, EventArgs e)
         {
-            dgvEmployees.DataSource = employeeDAL.SearchEmployees(txtSearch.Text.Trim());
+            GridHelper.Bind(dgvEmployees, employeeRepository.Search(txtSearch.Text.Trim()));
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
             try
             {
-                bool result = employeeDAL.AddEmployee(
-                    txtEmployeeName.Text.Trim(),
-                    cmbGender.Text,
-                    txtPhone.Text.Trim(),
-                    txtEmail.Text.Trim(),
-                    txtJobTitle.Text.Trim(),
-                    decimal.Parse(txtSalary.Text.Trim()),
-                    dtpHireDate.Value.Date
-                );
+                bool result = employeeRepository.Add(ReadEmployeeFromForm());
 
                 if (result)
                 {
@@ -84,17 +91,9 @@ namespace warehouse.NewFolder.Forms
                     return;
                 }
 
-                bool result = employeeDAL.UpdateEmployee(
-                    selectedEmployeeId,
-                    txtEmployeeName.Text.Trim(),
-                    cmbGender.Text,
-                    txtPhone.Text.Trim(),
-                    txtEmail.Text.Trim(),
-                    txtJobTitle.Text.Trim(),
-                    decimal.Parse(txtSalary.Text.Trim()),
-                    dtpHireDate.Value.Date,
-                    chkIsActive.Checked
-                );
+                Employee employee = ReadEmployeeFromForm();
+                employee.Id = selectedEmployeeId;
+                bool result = employeeRepository.Update(employee);
 
                 if (result)
                 {
@@ -123,7 +122,7 @@ namespace warehouse.NewFolder.Forms
                 DialogResult dr = MessageBox.Show("Are you sure?", "Confirm", MessageBoxButtons.YesNo);
                 if (dr == DialogResult.Yes)
                 {
-                    bool result = employeeDAL.DeleteEmployee(selectedEmployeeId);
+                    bool result = employeeRepository.Delete(selectedEmployeeId);
                     if (result)
                     {
                         MessageBox.Show("Employee deleted.");
