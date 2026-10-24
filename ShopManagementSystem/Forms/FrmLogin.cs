@@ -1,4 +1,6 @@
-﻿using ShopManagementSystem.DataAccess;
+﻿using Microsoft.Data.SqlClient;
+using ShopManagementSystem.DataAccess;
+using ShopManagementSystem.Helpers;
 using ShopManagementSystem.Models;
 using System;
 using System.Collections.Generic;
@@ -45,6 +47,8 @@ namespace warehouse.ShopManagementSystem.Forms
                     return;
                 }
 
+                btnLogin.Enabled = false;
+                Cursor = Cursors.WaitCursor;
                 User? user = userDAL.Login(txtUsername.Text.Trim(), txtPassword.Text.Trim());
 
                 if (user != null)
@@ -59,9 +63,19 @@ namespace warehouse.ShopManagementSystem.Forms
                     MessageBox.Show("Invalid username or password.");
                 }
             }
+            catch (SqlException ex)
+            {
+                ErrorHandler.ShowDatabase(ex, "log in");
+            }
             catch (Exception ex)
             {
-                MessageBox.Show("Error: " + ex.Message);
+                ErrorHandler.ShowUnexpected(ex, "log in");
+            }
+            finally
+            {
+                // Always restore the button, even if the database call failed.
+                btnLogin.Enabled = true;
+                Cursor = Cursors.Default;
             }
 
 

@@ -1,4 +1,7 @@
-﻿using ShopManagementSystem.DataAccess;
+﻿using Microsoft.Data.SqlClient;
+using ShopManagementSystem.DataAccess;
+using ShopManagementSystem.Exceptions;
+using ShopManagementSystem.Helpers;
 using ShopManagementSystem.Models;
 using System;
 using System.Collections.Generic;
@@ -58,9 +61,23 @@ namespace warehouse.ShopManagementSystem.Forms
                     btnClear.PerformClick();
                 }
             }
+            catch (ValidationException ex)
+            {
+                ErrorHandler.ShowValidation(ex);
+            }
+            catch (SqlException ex) when (ex.Number == 2627 || ex.Number == 2601)
+            {
+                // Unique constraint on Users.Username
+                MessageBox.Show("That username is already taken. Please choose another.",
+                    "Username taken", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            catch (SqlException ex)
+            {
+                ErrorHandler.ShowDatabase(ex, "register the user");
+            }
             catch (Exception ex)
             {
-                MessageBox.Show("Registration failed: " + ex.Message);
+                ErrorHandler.ShowUnexpected(ex, "register the user");
             }
         }
 

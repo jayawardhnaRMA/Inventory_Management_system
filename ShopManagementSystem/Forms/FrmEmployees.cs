@@ -5,7 +5,9 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
+using Microsoft.Data.SqlClient;
 using ShopManagementSystem.DataAccess;
+using ShopManagementSystem.Exceptions;
 using ShopManagementSystem.Helpers;
 using ShopManagementSystem.Models;
 
@@ -22,7 +24,29 @@ namespace warehouse.NewFolder.Forms
         }
         private void LoadEmployees()
         {
-            GridHelper.Bind(dgvEmployees, employeeRepository.GetAll());
+            ShowEmployees(() => employeeRepository.GetAll(), "load employees");
+        }
+
+        // Runs a query and shows the result in the grid, handling any database errors.
+        private void ShowEmployees(Func<List<Employee>> query, string action)
+        {
+            try
+            {
+                Cursor = Cursors.WaitCursor;
+                GridHelper.Bind(dgvEmployees, query());
+            }
+            catch (SqlException ex)
+            {
+                ErrorHandler.ShowDatabase(ex, action);
+            }
+            catch (Exception ex)
+            {
+                ErrorHandler.ShowUnexpected(ex, action);
+            }
+            finally
+            {
+                Cursor = Cursors.Default;
+            }
         }
 
         private Employee ReadEmployeeFromForm()
@@ -59,7 +83,7 @@ namespace warehouse.NewFolder.Forms
 
         private void button5_Click(object sender, EventArgs e)
         {
-            GridHelper.Bind(dgvEmployees, employeeRepository.Search(txtSearch.Text.Trim()));
+            ShowEmployees(() => employeeRepository.Search(txtSearch.Text.Trim()), "search employees");
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -75,9 +99,21 @@ namespace warehouse.NewFolder.Forms
                     ClearFields();
                 }
             }
+            catch (ValidationException ex)
+            {
+                ErrorHandler.ShowValidation(ex);
+            }
+            catch (Exception ex) when (ex is FormatException || ex is OverflowException)
+            {
+                ErrorHandler.ShowFormat("Salary must be a valid number.");
+            }
+            catch (SqlException ex)
+            {
+                ErrorHandler.ShowDatabase(ex, "add the employee");
+            }
             catch (Exception ex)
             {
-                MessageBox.Show("Add failed: " + ex.Message);
+                ErrorHandler.ShowUnexpected(ex, "add the employee");
             }
         }
 
@@ -102,9 +138,21 @@ namespace warehouse.NewFolder.Forms
                     ClearFields();
                 }
             }
+            catch (ValidationException ex)
+            {
+                ErrorHandler.ShowValidation(ex);
+            }
+            catch (Exception ex) when (ex is FormatException || ex is OverflowException)
+            {
+                ErrorHandler.ShowFormat("Salary must be a valid number.");
+            }
+            catch (SqlException ex)
+            {
+                ErrorHandler.ShowDatabase(ex, "update the employee");
+            }
             catch (Exception ex)
             {
-                MessageBox.Show("Update failed: " + ex.Message);
+                ErrorHandler.ShowUnexpected(ex, "update the employee");
             }
 
         }
@@ -131,9 +179,13 @@ namespace warehouse.NewFolder.Forms
                     }
                 }
             }
+            catch (SqlException ex)
+            {
+                ErrorHandler.ShowDatabase(ex, "delete the employee");
+            }
             catch (Exception ex)
             {
-                MessageBox.Show("Delete failed: " + ex.Message);
+                ErrorHandler.ShowUnexpected(ex, "delete the employee");
             }
         }
 

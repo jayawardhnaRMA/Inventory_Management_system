@@ -5,7 +5,9 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
+using Microsoft.Data.SqlClient;
 using ShopManagementSystem.DataAccess;
+using ShopManagementSystem.Exceptions;
 using ShopManagementSystem.Helpers;
 using ShopManagementSystem.Models;
 
@@ -27,7 +29,29 @@ namespace warehouse.NewFolder.Forms
         }
         private void LoadCustomers()
         {
-            GridHelper.Bind(dgvCustomers, customerRepository.GetAll());
+            ShowCustomers(() => customerRepository.GetAll(), "load customers");
+        }
+
+        // Runs a query and shows the result in the grid, handling any database errors.
+        private void ShowCustomers(Func<List<Customer>> query, string action)
+        {
+            try
+            {
+                Cursor = Cursors.WaitCursor;
+                GridHelper.Bind(dgvCustomers, query());
+            }
+            catch (SqlException ex)
+            {
+                ErrorHandler.ShowDatabase(ex, action);
+            }
+            catch (Exception ex)
+            {
+                ErrorHandler.ShowUnexpected(ex, action);
+            }
+            finally
+            {
+                Cursor = Cursors.Default;
+            }
         }
 
         private Customer ReadCustomerFromForm()
@@ -54,7 +78,7 @@ namespace warehouse.NewFolder.Forms
 
         private void btnSearch_Click(object sender, EventArgs e)
         {
-            GridHelper.Bind(dgvCustomers, customerRepository.Search(txtSearch.Text.Trim()));
+            ShowCustomers(() => customerRepository.Search(txtSearch.Text.Trim()), "search customers");
 
         }
 
@@ -71,9 +95,17 @@ namespace warehouse.NewFolder.Forms
                     ClearFields();
                 }
             }
+            catch (ValidationException ex)
+            {
+                ErrorHandler.ShowValidation(ex);
+            }
+            catch (SqlException ex)
+            {
+                ErrorHandler.ShowDatabase(ex, "add the customer");
+            }
             catch (Exception ex)
             {
-                MessageBox.Show("Add failed: " + ex.Message);
+                ErrorHandler.ShowUnexpected(ex, "add the customer");
             }
 
         }
@@ -99,9 +131,17 @@ namespace warehouse.NewFolder.Forms
                     ClearFields();
                 }
             }
+            catch (ValidationException ex)
+            {
+                ErrorHandler.ShowValidation(ex);
+            }
+            catch (SqlException ex)
+            {
+                ErrorHandler.ShowDatabase(ex, "update the customer");
+            }
             catch (Exception ex)
             {
-                MessageBox.Show("Update failed: " + ex.Message);
+                ErrorHandler.ShowUnexpected(ex, "update the customer");
             }
         }
 
@@ -127,9 +167,13 @@ namespace warehouse.NewFolder.Forms
                     }
                 }
             }
+            catch (SqlException ex)
+            {
+                ErrorHandler.ShowDatabase(ex, "delete the customer");
+            }
             catch (Exception ex)
             {
-                MessageBox.Show("Delete failed: " + ex.Message);
+                ErrorHandler.ShowUnexpected(ex, "delete the customer");
             }
         }
 

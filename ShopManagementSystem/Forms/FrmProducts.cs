@@ -1,7 +1,10 @@
-﻿using ShopManagementSystem.DataAccess;
+﻿using Microsoft.Data.SqlClient;
+using ShopManagementSystem.DataAccess;
+using ShopManagementSystem.Exceptions;
 using ShopManagementSystem.Helpers;
 using ShopManagementSystem.Models;
 using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace warehouse.NewFolder.Forms
@@ -18,7 +21,29 @@ namespace warehouse.NewFolder.Forms
 
         private void LoadProducts()
         {
-            GridHelper.Bind(dgvProducts, productRepository.GetAll());
+            ShowProducts(() => productRepository.GetAll(), "load products");
+        }
+
+        // Runs a query and shows the result in the grid, handling any database errors.
+        private void ShowProducts(Func<List<Product>> query, string action)
+        {
+            try
+            {
+                Cursor = Cursors.WaitCursor;
+                GridHelper.Bind(dgvProducts, query());
+            }
+            catch (SqlException ex)
+            {
+                ErrorHandler.ShowDatabase(ex, action);
+            }
+            catch (Exception ex)
+            {
+                ErrorHandler.ShowUnexpected(ex, action);
+            }
+            finally
+            {
+                Cursor = Cursors.Default;
+            }
         }
 
         // Builds a Product object from the textboxes; the model validates the values.
@@ -69,7 +94,7 @@ namespace warehouse.NewFolder.Forms
 
         private void btnSearch_Click(object sender, EventArgs e)
         {
-            GridHelper.Bind(dgvProducts, productRepository.Search(txtSearch.Text.Trim()));
+            ShowProducts(() => productRepository.Search(txtSearch.Text.Trim()), "search products");
         }
 
         private void btnAdd_Click(object sender, EventArgs e)
@@ -85,9 +110,21 @@ namespace warehouse.NewFolder.Forms
                     ClearFields();
                 }
             }
+            catch (ValidationException ex)
+            {
+                ErrorHandler.ShowValidation(ex);
+            }
+            catch (Exception ex) when (ex is FormatException || ex is OverflowException)
+            {
+                ErrorHandler.ShowFormat("Price, quantity and reorder level must be valid numbers.");
+            }
+            catch (SqlException ex)
+            {
+                ErrorHandler.ShowDatabase(ex, "add the product");
+            }
             catch (Exception ex)
             {
-                MessageBox.Show("Add failed: " + ex.Message);
+                ErrorHandler.ShowUnexpected(ex, "add the product");
             }
         }
 
@@ -112,9 +149,21 @@ namespace warehouse.NewFolder.Forms
                     ClearFields();
                 }
             }
+            catch (ValidationException ex)
+            {
+                ErrorHandler.ShowValidation(ex);
+            }
+            catch (Exception ex) when (ex is FormatException || ex is OverflowException)
+            {
+                ErrorHandler.ShowFormat("Price, quantity and reorder level must be valid numbers.");
+            }
+            catch (SqlException ex)
+            {
+                ErrorHandler.ShowDatabase(ex, "update the product");
+            }
             catch (Exception ex)
             {
-                MessageBox.Show("Update failed: " + ex.Message);
+                ErrorHandler.ShowUnexpected(ex, "update the product");
             }
         }
 
@@ -140,9 +189,13 @@ namespace warehouse.NewFolder.Forms
                     }
                 }
             }
+            catch (SqlException ex)
+            {
+                ErrorHandler.ShowDatabase(ex, "delete the product");
+            }
             catch (Exception ex)
             {
-                MessageBox.Show("Delete failed: " + ex.Message);
+                ErrorHandler.ShowUnexpected(ex, "delete the product");
             }
         }
 
