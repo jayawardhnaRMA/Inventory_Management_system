@@ -92,9 +92,8 @@ namespace warehouse.ShopManagementSystem.Forms
 
         private void btnBackLogin_Click(object sender, EventArgs e)
         {
-            FrmLogin login = new FrmLogin();
-            login.Show();
-            this.Hide();
+            // Back to the login screen, which reappears when this screen closes.
+            Close();
 
         }
 

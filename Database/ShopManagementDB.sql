@@ -222,6 +222,29 @@ BEGIN
 END
 GO
 
+-- ===== Dashboard =====
+CREATE OR ALTER PROCEDURE sp_GetDashboardStats
+AS
+BEGIN
+    SELECT
+        (SELECT COUNT(*) FROM Products) AS TotalProducts,
+        (SELECT COUNT(*) FROM Products WHERE QuantityInStock <= ReorderLevel) AS LowStockProducts,
+        (SELECT ISNULL(SUM(UnitPrice * QuantityInStock), 0) FROM Products) AS StockValue,
+        (SELECT COUNT(*) FROM Customers) AS TotalCustomers,
+        (SELECT COUNT(*) FROM Employees WHERE IsActive = 1) AS ActiveEmployees,
+        (SELECT COUNT(*) FROM Employees) AS TotalEmployees;
+END
+GO
+
+CREATE OR ALTER PROCEDURE sp_GetLowStockProducts
+AS
+BEGIN
+    SELECT * FROM Products
+    WHERE QuantityInStock <= ReorderLevel
+    ORDER BY QuantityInStock;
+END
+GO
+
 -- ===== Default login: admin / admin123 =====
 IF NOT EXISTS (SELECT 1 FROM Users WHERE Username = 'admin')
     INSERT INTO Users (FullName, Username, PasswordHash, UserRole)

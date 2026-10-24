@@ -43,6 +43,17 @@
             panel2 = new Panel();
             panel3 = new Panel();
             panel4 = new Panel();
+            lblWelcome = new Label();
+            pnlStats = new Panel();
+            lblStatsTitle = new Label();
+            lblTotalProducts = new Label();
+            lblLowStock = new Label();
+            lblStockValue = new Label();
+            lblCustomers = new Label();
+            lblActiveEmployees = new Label();
+            lblLowStockTitle = new Label();
+            lstLowStock = new ListBox();
+            btnRefresh = new Button();
             ((System.ComponentModel.ISupportInitialize)btnProducts).BeginInit();
             ((System.ComponentModel.ISupportInitialize)btnCustomers).BeginInit();
             ((System.ComponentModel.ISupportInitialize)btnEmployees).BeginInit();
@@ -53,6 +64,7 @@
             panel2.SuspendLayout();
             panel3.SuspendLayout();
             panel4.SuspendLayout();
+            pnlStats.SuspendLayout();
             SuspendLayout();
             // 
             // label1
@@ -169,11 +181,11 @@
             label5.AutoSize = true;
             label5.BackColor = SystemColors.ActiveCaption;
             label5.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
-            label5.Location = new Point(64, 171);
+            label5.Location = new Point(55, 171);
             label5.Name = "label5";
-            label5.Size = new Size(62, 23);
+            label5.Size = new Size(80, 23);
             label5.TabIndex = 31;
-            label5.Text = "LOGIN";
+            label5.Text = "LOGOUT";
             // 
             // pictureBox1
             // 
@@ -226,13 +238,126 @@
             panel4.Name = "panel4";
             panel4.Size = new Size(186, 207);
             panel4.TabIndex = 35;
-            // 
+            //
+            // lblWelcome
+            //
+            lblWelcome.AutoSize = true;
+            lblWelcome.Location = new Point(12, 14);
+            lblWelcome.Name = "lblWelcome";
+            lblWelcome.Size = new Size(90, 23);
+            lblWelcome.TabIndex = 36;
+            lblWelcome.Text = "Welcome";
+            //
+            // pnlStats
+            //
+            pnlStats.BackColor = SystemColors.ButtonHighlight;
+            pnlStats.Controls.Add(lblStatsTitle);
+            pnlStats.Controls.Add(lblTotalProducts);
+            pnlStats.Controls.Add(lblLowStock);
+            pnlStats.Controls.Add(lblStockValue);
+            pnlStats.Controls.Add(lblCustomers);
+            pnlStats.Controls.Add(lblActiveEmployees);
+            pnlStats.Controls.Add(lblLowStockTitle);
+            pnlStats.Controls.Add(lstLowStock);
+            pnlStats.Controls.Add(btnRefresh);
+            pnlStats.Location = new Point(430, 76);
+            pnlStats.Name = "pnlStats";
+            pnlStats.Size = new Size(255, 459);
+            pnlStats.TabIndex = 37;
+            //
+            // lblStatsTitle
+            //
+            lblStatsTitle.AutoSize = true;
+            lblStatsTitle.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            lblStatsTitle.ForeColor = Color.SteelBlue;
+            lblStatsTitle.Location = new Point(10, 8);
+            lblStatsTitle.Name = "lblStatsTitle";
+            lblStatsTitle.Size = new Size(160, 28);
+            lblStatsTitle.TabIndex = 0;
+            lblStatsTitle.Text = "SHOP OVERVIEW";
+            //
+            // lblTotalProducts
+            //
+            lblTotalProducts.AutoSize = true;
+            lblTotalProducts.Location = new Point(10, 50);
+            lblTotalProducts.Name = "lblTotalProducts";
+            lblTotalProducts.Size = new Size(140, 23);
+            lblTotalProducts.TabIndex = 1;
+            lblTotalProducts.Text = "Products: -";
+            //
+            // lblLowStock
+            //
+            lblLowStock.AutoSize = true;
+            lblLowStock.Location = new Point(10, 80);
+            lblLowStock.Name = "lblLowStock";
+            lblLowStock.Size = new Size(140, 23);
+            lblLowStock.TabIndex = 2;
+            lblLowStock.Text = "Low stock: -";
+            //
+            // lblStockValue
+            //
+            lblStockValue.AutoSize = true;
+            lblStockValue.Location = new Point(10, 110);
+            lblStockValue.Name = "lblStockValue";
+            lblStockValue.Size = new Size(140, 23);
+            lblStockValue.TabIndex = 3;
+            lblStockValue.Text = "Stock value: -";
+            //
+            // lblCustomers
+            //
+            lblCustomers.AutoSize = true;
+            lblCustomers.Location = new Point(10, 140);
+            lblCustomers.Name = "lblCustomers";
+            lblCustomers.Size = new Size(140, 23);
+            lblCustomers.TabIndex = 4;
+            lblCustomers.Text = "Customers: -";
+            //
+            // lblActiveEmployees
+            //
+            lblActiveEmployees.AutoSize = true;
+            lblActiveEmployees.Location = new Point(10, 170);
+            lblActiveEmployees.Name = "lblActiveEmployees";
+            lblActiveEmployees.Size = new Size(140, 23);
+            lblActiveEmployees.TabIndex = 5;
+            lblActiveEmployees.Text = "Employees: -";
+            //
+            // lblLowStockTitle
+            //
+            lblLowStockTitle.AutoSize = true;
+            lblLowStockTitle.Location = new Point(10, 215);
+            lblLowStockTitle.Name = "lblLowStockTitle";
+            lblLowStockTitle.Size = new Size(150, 23);
+            lblLowStockTitle.TabIndex = 6;
+            lblLowStockTitle.Text = "Low stock items:";
+            //
+            // lstLowStock
+            //
+            lstLowStock.Font = new Font("Segoe UI", 9F);
+            lstLowStock.Location = new Point(10, 242);
+            lstLowStock.Name = "lstLowStock";
+            lstLowStock.Size = new Size(235, 144);
+            lstLowStock.TabIndex = 7;
+            //
+            // btnRefresh
+            //
+            btnRefresh.BackColor = Color.Navy;
+            btnRefresh.ForeColor = Color.White;
+            btnRefresh.Location = new Point(10, 400);
+            btnRefresh.Name = "btnRefresh";
+            btnRefresh.Size = new Size(235, 40);
+            btnRefresh.TabIndex = 8;
+            btnRefresh.Text = "REFRESH";
+            btnRefresh.UseVisualStyleBackColor = false;
+            btnRefresh.Click += btnRefresh_Click;
+            //
             // FrmDashboard
-            // 
+            //
             AutoScaleDimensions = new SizeF(10F, 23F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ActiveCaption;
             ClientSize = new Size(1084, 545);
+            Controls.Add(pnlStats);
+            Controls.Add(lblWelcome);
             Controls.Add(panel4);
             Controls.Add(panel3);
             Controls.Add(panel2);
@@ -245,6 +370,7 @@
             Name = "FrmDashboard";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "FrmDashboard";
+            Load += FrmDashboard_Load;
             ((System.ComponentModel.ISupportInitialize)btnProducts).EndInit();
             ((System.ComponentModel.ISupportInitialize)btnCustomers).EndInit();
             ((System.ComponentModel.ISupportInitialize)btnEmployees).EndInit();
@@ -259,6 +385,8 @@
             panel3.PerformLayout();
             panel4.ResumeLayout(false);
             panel4.PerformLayout();
+            pnlStats.ResumeLayout(false);
+            pnlStats.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -280,5 +408,16 @@
         private Panel panel2;
         private Panel panel3;
         private Panel panel4;
+        private Label lblWelcome;
+        private Panel pnlStats;
+        private Label lblStatsTitle;
+        private Label lblTotalProducts;
+        private Label lblLowStock;
+        private Label lblStockValue;
+        private Label lblCustomers;
+        private Label lblActiveEmployees;
+        private Label lblLowStockTitle;
+        private ListBox lstLowStock;
+        private Button btnRefresh;
     }
 }

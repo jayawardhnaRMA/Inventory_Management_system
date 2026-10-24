@@ -60,7 +60,7 @@ namespace ShopManagementSystem.DataAccess
             return ExecuteNonQuery(DeleteProcedure, cmd => cmd.Parameters.AddWithValue(IdParameter, id)) > 0;
         }
 
-        private List<T> MapRows(DataTable table)
+        protected List<T> MapRows(DataTable table)
         {
             List<T> items = new List<T>();
             foreach (DataRow row in table.Rows)

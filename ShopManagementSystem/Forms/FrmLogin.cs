@@ -39,6 +39,7 @@ namespace warehouse.ShopManagementSystem.Forms
 
         private void btnLogin_Click(object sender, EventArgs e)
         {
+            User? user = null;
             try
             {
                 if (txtUsername.Text.Trim() == "" || txtPassword.Text.Trim() == "")
@@ -49,16 +50,9 @@ namespace warehouse.ShopManagementSystem.Forms
 
                 btnLogin.Enabled = false;
                 Cursor = Cursors.WaitCursor;
-                User? user = userDAL.Login(txtUsername.Text.Trim(), txtPassword.Text.Trim());
+                user = userDAL.Login(txtUsername.Text.Trim(), txtPassword.Text.Trim());
 
-                if (user != null)
-                {
-                    MessageBox.Show($"Login successful. Welcome, {user.Name}!");
-                    FrmDashboard dashboard = new FrmDashboard();
-                    dashboard.Show();
-                    this.Hide();
-                }
-                else
+                if (user == null)
                 {
                     MessageBox.Show("Invalid username or password.");
                 }
@@ -78,7 +72,29 @@ namespace warehouse.ShopManagementSystem.Forms
                 Cursor = Cursors.Default;
             }
 
+            if (user != null)
+                OpenDashboard(user);
+        }
 
+        // The login form stays hidden while the dashboard is open. Logging out returns here;
+        // closing the dashboard any other way exits the application.
+        private void OpenDashboard(User user)
+        {
+            Session.Start(user);
+            txtPassword.Clear();
+            Hide();
+
+            DialogResult result;
+            using (FrmDashboard dashboard = new FrmDashboard())
+            {
+                result = dashboard.ShowDialog();
+            }
+
+            Session.End();
+            if (result == DialogResult.OK)
+                Show();
+            else
+                Close();
         }
 
         private void btnClear_Click(object sender, EventArgs e)
@@ -91,9 +107,12 @@ namespace warehouse.ShopManagementSystem.Forms
 
         private void btnGoSignup_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            FrmSignup signup = new FrmSignup();
-            signup.Show();
-            this.Hide();
+            Hide();
+            using (FrmSignup signup = new FrmSignup())
+            {
+                signup.ShowDialog();
+            }
+            Show();
         }
 
         private void pictureBox2_Click(object sender, EventArgs e)

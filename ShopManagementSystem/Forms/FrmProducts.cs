@@ -252,9 +252,8 @@ namespace warehouse.NewFolder.Forms
 
         private void pictureBox1_Click(object sender, EventArgs e)
         {
-            FrmDashboard dashboard = new FrmDashboard();
-            dashboard.Show();
-            this.Hide();
+            // Back to the dashboard, which reappears when this screen closes.
+            Close();
         }
     }
 }

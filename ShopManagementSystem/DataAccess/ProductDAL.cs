@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using Microsoft.Data.SqlClient;
 using ShopManagementSystem.Models;
@@ -13,6 +14,11 @@ namespace ShopManagementSystem.DataAccess
         protected override string UpdateProcedure => "sp_UpdateProduct";
         protected override string DeleteProcedure => "sp_DeleteProduct";
         protected override string IdParameter => "@ProductID";
+
+        public List<Product> GetLowStock()
+        {
+            return MapRows(ExecuteQuery("sp_GetLowStockProducts"));
+        }
 
         protected override Product MapRow(DataRow row)
         {
