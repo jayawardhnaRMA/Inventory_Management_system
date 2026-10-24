@@ -39,6 +39,7 @@
             btnGoSignup = new LinkLabel();
             txtUsername = new TextBox();
             txtPassword = new TextBox();
+            chkShowPassword = new CheckBox();
             pictureBox2 = new PictureBox();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
@@ -67,7 +68,7 @@
             label3.Name = "label3";
             label3.Size = new Size(192, 76);
             label3.TabIndex = 3;
-            label3.Text = "Invetory\r\nManagement";
+            label3.Text = "Inventory\r\nManagement";
             // 
             // pictureBox1
             // 
@@ -168,7 +169,19 @@
             txtPassword.Name = "txtPassword";
             txtPassword.Size = new Size(343, 30);
             txtPassword.TabIndex = 7;
+            txtPassword.UseSystemPasswordChar = true;
             txtPassword.TextChanged += txtPassword_TextChanged;
+            //
+            // chkShowPassword
+            //
+            chkShowPassword.AutoSize = true;
+            chkShowPassword.Location = new Point(822, 347);
+            chkShowPassword.Name = "chkShowPassword";
+            chkShowPassword.Size = new Size(165, 27);
+            chkShowPassword.TabIndex = 8;
+            chkShowPassword.Text = "Show password";
+            chkShowPassword.UseVisualStyleBackColor = true;
+            chkShowPassword.CheckedChanged += chkShowPassword_CheckedChanged;
             // 
             // pictureBox2
             // 
@@ -187,7 +200,9 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ActiveCaption;
             ClientSize = new Size(1204, 540);
+            AcceptButton = btnLogin;
             Controls.Add(pictureBox2);
+            Controls.Add(chkShowPassword);
             Controls.Add(txtPassword);
             Controls.Add(label4);
             Controls.Add(txtUsername);
@@ -223,6 +238,7 @@
         private LinkLabel btnGoSignup;
         private TextBox txtUsername;
         private TextBox txtPassword;
+        private CheckBox chkShowPassword;
         private Label label3;
         private PictureBox pictureBox2;
     }

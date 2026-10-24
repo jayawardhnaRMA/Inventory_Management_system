@@ -101,6 +101,7 @@ namespace warehouse.ShopManagementSystem.Forms
         {
             txtUsername.Clear();
             txtPassword.Clear();
+            chkShowPassword.Checked = false;
             txtUsername.Focus();
 
         }
@@ -118,6 +119,12 @@ namespace warehouse.ShopManagementSystem.Forms
         private void pictureBox2_Click(object sender, EventArgs e)
         {
             Close();
+        }
+
+        private void chkShowPassword_CheckedChanged(object sender, EventArgs e)
+        {
+            // Hidden (dots) unless the box is ticked.
+            txtPassword.UseSystemPasswordChar = !chkShowPassword.Checked;
         }
     }
 }

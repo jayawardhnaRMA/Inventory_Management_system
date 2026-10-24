@@ -86,6 +86,7 @@ namespace warehouse.ShopManagementSystem.Forms
             txtFullName.Clear();
             txtUsername.Clear();
             txtPassword.Clear();
+            chkShowPassword.Checked = false;
             cmbRole.SelectedIndex = 2;
 
         }
@@ -109,6 +110,12 @@ namespace warehouse.ShopManagementSystem.Forms
         {
             Close();
 
+        }
+
+        private void chkShowPassword_CheckedChanged(object sender, EventArgs e)
+        {
+            // Hidden (dots) unless the box is ticked.
+            txtPassword.UseSystemPasswordChar = !chkShowPassword.Checked;
         }
     }
 }

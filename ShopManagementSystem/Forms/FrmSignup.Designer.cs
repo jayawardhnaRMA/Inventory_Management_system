@@ -53,6 +53,7 @@
             Password = new Label();
             cmbRole = new ComboBox();
             txtPassword = new TextBox();
+            chkShowPassword = new CheckBox();
             btnClear = new Button();
             pictureBox2 = new PictureBox();
             panel1.SuspendLayout();
@@ -184,7 +185,7 @@
             label1.Name = "label1";
             label1.Size = new Size(192, 76);
             label1.TabIndex = 1;
-            label1.Text = "Invetory\r\nManagement";
+            label1.Text = "Inventory\r\nManagement";
             // 
             // comboBox1
             // 
@@ -300,7 +301,7 @@
             label2.Name = "label2";
             label2.Size = new Size(151, 50);
             label2.TabIndex = 2;
-            label2.Text = "SIGNIN";
+            label2.Text = "SIGN UP";
             // 
             // label5
             // 
@@ -338,13 +339,24 @@
             // 
             // txtPassword
             // 
-            txtPassword.ForeColor = SystemColors.ActiveCaption;
             txtPassword.Location = new Point(786, 404);
             txtPassword.Margin = new Padding(4, 3, 4, 3);
             txtPassword.Name = "txtPassword";
             txtPassword.Size = new Size(255, 30);
             txtPassword.TabIndex = 19;
+            txtPassword.UseSystemPasswordChar = true;
             txtPassword.TextChanged += txtPassword_TextChanged;
+            //
+            // chkShowPassword
+            //
+            chkShowPassword.AutoSize = true;
+            chkShowPassword.Location = new Point(786, 442);
+            chkShowPassword.Name = "chkShowPassword";
+            chkShowPassword.Size = new Size(165, 27);
+            chkShowPassword.TabIndex = 20;
+            chkShowPassword.Text = "Show password";
+            chkShowPassword.UseVisualStyleBackColor = true;
+            chkShowPassword.CheckedChanged += chkShowPassword_CheckedChanged;
             // 
             // btnClear
             // 
@@ -378,6 +390,7 @@
             BackColor = SystemColors.ActiveCaption;
             ClientSize = new Size(1166, 613);
             Controls.Add(pictureBox2);
+            Controls.Add(chkShowPassword);
             Controls.Add(btnClear);
             Controls.Add(label2);
             Controls.Add(txtPassword);
@@ -422,6 +435,7 @@
         private Label Password;
         private ComboBox cmbRole;
         private TextBox txtPassword;
+        private CheckBox chkShowPassword;
         private Button btnClear;
         private Button button3;
         private TextBox textBox3;
