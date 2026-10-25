@@ -1,4 +1,5 @@
-﻿using ShopManagementSystem.Exceptions;
+﻿using System;
+using ShopManagementSystem.Exceptions;
 
 namespace ShopManagementSystem.Models
 {
@@ -44,6 +45,9 @@ namespace ShopManagementSystem.Models
             get => _role;
             set => _role = ValidationRules.Required(value, "Role");
         }
+
+        // Set by the database when the account is created.
+        public DateTime? CreatedAt { get; set; }
 
         public override string GetRole()
         {

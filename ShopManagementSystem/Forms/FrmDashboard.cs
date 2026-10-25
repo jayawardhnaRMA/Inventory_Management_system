@@ -16,18 +16,70 @@ namespace warehouse.NewFolder.Forms
     {
         private readonly DashboardDAL dashboardDAL = new DashboardDAL();
         private readonly ProductDAL productDAL = new ProductDAL();
+        private readonly UserDAL userDAL = new UserDAL();
+        private readonly ToolTip toolTip = new ToolTip();
 
         public FrmDashboard()
         {
             InitializeComponent();
             UiTheme.Apply(this);
+            SetUpProfileLink();
         }
 
         private void FrmDashboard_Load(object sender, EventArgs e)
         {
             User? user = Session.CurrentUser;
-            lblWelcome.Text = user == null ? "Welcome" : $"Welcome, {user.Name} ({user.Role})";
+            lblWelcome.Text = user == null ? "Welcome" : $"Welcome, {user.Name} ({user.Role})  ▾";
             LoadStats();
+        }
+
+        // The welcome text acts as a link that opens the profile window.
+        private void SetUpProfileLink()
+        {
+            Font normal = lblWelcome.Font;
+            Font underlined = new Font(normal, normal.Style | FontStyle.Underline);
+
+            lblWelcome.Cursor = Cursors.Hand;
+            toolTip.SetToolTip(lblWelcome, "View profile");
+            lblWelcome.MouseEnter += (sender, e) => lblWelcome.Font = underlined;
+            lblWelcome.MouseLeave += (sender, e) => lblWelcome.Font = normal;
+            lblWelcome.Click += (sender, e) => ShowProfile();
+        }
+
+        private void ShowProfile()
+        {
+            if (Session.CurrentUser == null)
+                return;
+
+            try
+            {
+                Cursor = Cursors.WaitCursor;
+                User? profile = userDAL.GetProfile(Session.CurrentUser.Id);
+                Cursor = Cursors.Default;
+
+                if (profile == null)
+                {
+                    Dialogs.Warning("Your account could not be found. It may have been removed.", "Profile");
+                    return;
+                }
+
+                using (FrmProfile profileForm = new FrmProfile(profile))
+                {
+                    profileForm.ShowDialog(this);
+                }
+            }
+            catch (SqlException ex)
+            {
+                ErrorHandler.ShowDatabase(ex, "load your profile");
+            }
+            catch (Exception ex)
+            {
+                ErrorHandler.ShowUnexpected(ex, "load your profile");
+            }
+            finally
+            {
+                Cursor = Cursors.Default;
+            }
         }
 
         private void LoadStats()

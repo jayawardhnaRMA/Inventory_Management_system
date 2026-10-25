@@ -41,5 +41,23 @@ namespace ShopManagementSystem.DataAccess
                 Role = ReadString(row, "UserRole")
             };
         }
+
+        // Loads the latest account details for the profile window, or null if the user no longer exists.
+        public User? GetProfile(int userId)
+        {
+            DataTable result = ExecuteQuery("sp_GetUserProfile", cmd => cmd.Parameters.AddWithValue("@UserID", userId));
+            if (result.Rows.Count == 0)
+                return null;
+
+            DataRow row = result.Rows[0];
+            return new User
+            {
+                Id = Convert.ToInt32(row["UserID"]),
+                Name = ReadString(row, "FullName"),
+                Username = ReadString(row, "Username"),
+                Role = ReadString(row, "UserRole"),
+                CreatedAt = row["CreatedAt"] == DBNull.Value ? null : Convert.ToDateTime(row["CreatedAt"])
+            };
+        }
     }
 }

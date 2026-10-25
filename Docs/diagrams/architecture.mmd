@@ -9,6 +9,7 @@ flowchart TB
         F4[FrmProducts]
         F5[FrmCustomers]
         F6[FrmEmployees]
+        F7[FrmProfile]
     end
 
     subgraph HELP["Helpers"]
@@ -34,7 +35,7 @@ flowchart TB
 
     subgraph DB["SQL Server Express — ShopManagementDB"]
         direction LR
-        S1["19 stored procedures<br/>sp_AddProduct, sp_LoginUser, ..."]
+        S1["20 stored procedures<br/>sp_AddProduct, sp_LoginUser, ..."]
         S2[("Tables<br/>Users · Products<br/>Customers · Employees")]
     end
 

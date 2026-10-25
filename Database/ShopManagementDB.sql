@@ -75,6 +75,16 @@ BEGIN
 END
 GO
 
+CREATE OR ALTER PROCEDURE sp_GetUserProfile
+    @UserID INT
+AS
+BEGIN
+    SELECT UserID, FullName, Username, UserRole, CreatedAt
+    FROM Users
+    WHERE UserID = @UserID;
+END
+GO
+
 -- ===== Products =====
 CREATE OR ALTER PROCEDURE sp_GetAllProducts
 AS

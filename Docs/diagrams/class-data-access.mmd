@@ -58,6 +58,7 @@ classDiagram
     class UserDAL {
         +Register(User user) bool
         +Login(username, password) User?
+        +GetProfile(int userId) User?
     }
 
     class DashboardDAL {
