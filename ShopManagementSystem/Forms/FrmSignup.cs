@@ -19,6 +19,7 @@ namespace warehouse.ShopManagementSystem.Forms
         public FrmSignup()
         {
             InitializeComponent();
+            UiTheme.StyleButtons(this);
         }
 
         private void txtUsername_TextChanged(object sender, EventArgs e)

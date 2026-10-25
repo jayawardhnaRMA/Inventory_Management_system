@@ -21,6 +21,7 @@ namespace warehouse.NewFolder.Forms
         public FrmEmployees()
         {
             InitializeComponent();
+            UiTheme.StyleButtons(this);
         }
         private void LoadEmployees()
         {

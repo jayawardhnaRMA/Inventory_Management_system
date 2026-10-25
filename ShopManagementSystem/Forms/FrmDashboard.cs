@@ -20,6 +20,7 @@ namespace warehouse.NewFolder.Forms
         public FrmDashboard()
         {
             InitializeComponent();
+            UiTheme.StyleButtons(this);
         }
 
         private void FrmDashboard_Load(object sender, EventArgs e)

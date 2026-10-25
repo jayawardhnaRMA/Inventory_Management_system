@@ -20,6 +20,7 @@ namespace warehouse.ShopManagementSystem.Forms
         public FrmLogin()
         {
             InitializeComponent();
+            UiTheme.StyleButtons(this);
         }
 
         private void FrmLogin_Load(object sender, EventArgs e)
