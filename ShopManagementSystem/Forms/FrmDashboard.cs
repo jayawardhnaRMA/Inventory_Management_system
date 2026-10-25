@@ -92,8 +92,7 @@ namespace warehouse.NewFolder.Forms
         {
             if (!Session.CanManageEmployees)
             {
-                MessageBox.Show("Only Admin or Manager users can manage employees.",
-                    "Access denied", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                Dialogs.Warning("Only Admin or Manager users can manage employees.", "Access denied");
                 return;
             }
             OpenScreen(new FrmEmployees());

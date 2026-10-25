@@ -91,7 +91,7 @@ namespace warehouse.NewFolder.Forms
 
                 if (result)
                 {
-                    MessageBox.Show("Customer added successfully.");
+                    Dialogs.Success("Customer added successfully.");
                     LoadCustomers();
                     ClearFields();
                 }
@@ -117,7 +117,7 @@ namespace warehouse.NewFolder.Forms
             {
                 if (selectedCustomerId == 0)
                 {
-                    MessageBox.Show("Please select a customer.");
+                    Dialogs.Warning("Please select a customer.", "No selection");
                     return;
                 }
 
@@ -127,7 +127,7 @@ namespace warehouse.NewFolder.Forms
 
                 if (result)
                 {
-                    MessageBox.Show("Customer updated.");
+                    Dialogs.Success("Customer updated successfully.");
                     LoadCustomers();
                     ClearFields();
                 }
@@ -152,17 +152,16 @@ namespace warehouse.NewFolder.Forms
             {
                 if (selectedCustomerId == 0)
                 {
-                    MessageBox.Show("Please select a customer.");
+                    Dialogs.Warning("Please select a customer.", "No selection");
                     return;
                 }
 
-                DialogResult dr = MessageBox.Show("Are you sure?", "Confirm", MessageBoxButtons.YesNo);
-                if (dr == DialogResult.Yes)
+                if (Dialogs.ConfirmDelete($"the customer \"{txtCustomerName.Text}\""))
                 {
                     bool result = customerRepository.Delete(selectedCustomerId);
                     if (result)
                     {
-                        MessageBox.Show("Customer deleted.");
+                        Dialogs.Success("Customer deleted successfully.");
                         LoadCustomers();
                         ClearFields();
                     }

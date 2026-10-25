@@ -49,7 +49,7 @@ namespace warehouse.ShopManagementSystem.Forms
             {
                 if (txtFullName.Text.Trim() == "" || txtUsername.Text.Trim() == "" || txtPassword.Text.Trim() == "")
                 {
-                    MessageBox.Show("Please fill all required fields.");
+                    Dialogs.Warning("Please fill all required fields.", "Missing information");
                     return;
                 }
 
@@ -58,7 +58,7 @@ namespace warehouse.ShopManagementSystem.Forms
 
                 if (result)
                 {
-                    MessageBox.Show("User registered successfully.");
+                    Dialogs.Success("User registered successfully.");
                     btnClear.PerformClick();
                 }
             }
@@ -69,8 +69,7 @@ namespace warehouse.ShopManagementSystem.Forms
             catch (SqlException ex) when (ex.Number == 2627 || ex.Number == 2601)
             {
                 // Unique constraint on Users.Username
-                MessageBox.Show("That username is already taken. Please choose another.",
-                    "Username taken", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                Dialogs.Warning("That username is already taken. Please choose another.", "Username taken");
             }
             catch (SqlException ex)
             {

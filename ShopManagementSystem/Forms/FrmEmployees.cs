@@ -95,7 +95,7 @@ namespace warehouse.NewFolder.Forms
 
                 if (result)
                 {
-                    MessageBox.Show("Employee added successfully.");
+                    Dialogs.Success("Employee added successfully.");
                     LoadEmployees();
                     ClearFields();
                 }
@@ -124,7 +124,7 @@ namespace warehouse.NewFolder.Forms
             {
                 if (selectedEmployeeId == 0)
                 {
-                    MessageBox.Show("Please select an employee.");
+                    Dialogs.Warning("Please select an employee.", "No selection");
                     return;
                 }
 
@@ -134,7 +134,7 @@ namespace warehouse.NewFolder.Forms
 
                 if (result)
                 {
-                    MessageBox.Show("Employee updated.");
+                    Dialogs.Success("Employee updated successfully.");
                     LoadEmployees();
                     ClearFields();
                 }
@@ -164,17 +164,16 @@ namespace warehouse.NewFolder.Forms
             {
                 if (selectedEmployeeId == 0)
                 {
-                    MessageBox.Show("Please select an employee.");
+                    Dialogs.Warning("Please select an employee.", "No selection");
                     return;
                 }
 
-                DialogResult dr = MessageBox.Show("Are you sure?", "Confirm", MessageBoxButtons.YesNo);
-                if (dr == DialogResult.Yes)
+                if (Dialogs.ConfirmDelete($"the employee \"{txtEmployeeName.Text}\""))
                 {
                     bool result = employeeRepository.Delete(selectedEmployeeId);
                     if (result)
                     {
-                        MessageBox.Show("Employee deleted.");
+                        Dialogs.Success("Employee deleted successfully.");
                         LoadEmployees();
                         ClearFields();
                     }

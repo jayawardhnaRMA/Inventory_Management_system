@@ -45,7 +45,7 @@ namespace warehouse.ShopManagementSystem.Forms
             {
                 if (txtUsername.Text.Trim() == "" || txtPassword.Text.Trim() == "")
                 {
-                    MessageBox.Show("Please enter username and password.");
+                    Dialogs.Warning("Please enter username and password.", "Missing information");
                     return;
                 }
 
@@ -55,7 +55,7 @@ namespace warehouse.ShopManagementSystem.Forms
 
                 if (user == null)
                 {
-                    MessageBox.Show("Invalid username or password.");
+                    Dialogs.Warning("Invalid username or password.", "Login failed");
                 }
             }
             catch (SqlException ex)

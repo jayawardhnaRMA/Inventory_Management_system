@@ -106,7 +106,7 @@ namespace warehouse.NewFolder.Forms
 
                 if (result)
                 {
-                    MessageBox.Show("Product added successfully.");
+                    Dialogs.Success("Product added successfully.");
                     LoadProducts();
                     ClearFields();
                 }
@@ -135,7 +135,7 @@ namespace warehouse.NewFolder.Forms
             {
                 if (selectedProductId == 0)
                 {
-                    MessageBox.Show("Please select a product.");
+                    Dialogs.Warning("Please select a product.", "No selection");
                     return;
                 }
 
@@ -145,7 +145,7 @@ namespace warehouse.NewFolder.Forms
 
                 if (result)
                 {
-                    MessageBox.Show("Product updated successfully.");
+                    Dialogs.Success("Product updated successfully.");
                     LoadProducts();
                     ClearFields();
                 }
@@ -174,17 +174,16 @@ namespace warehouse.NewFolder.Forms
             {
                 if (selectedProductId == 0)
                 {
-                    MessageBox.Show("Please select a product.");
+                    Dialogs.Warning("Please select a product.", "No selection");
                     return;
                 }
 
-                DialogResult dr = MessageBox.Show("Are you sure?", "Confirm", MessageBoxButtons.YesNo);
-                if (dr == DialogResult.Yes)
+                if (Dialogs.ConfirmDelete($"the product \"{txtProductName.Text}\""))
                 {
                     bool result = productRepository.Delete(selectedProductId);
                     if (result)
                     {
-                        MessageBox.Show("Product deleted.");
+                        Dialogs.Success("Product deleted successfully.");
                         LoadProducts();
                         ClearFields();
                     }
