@@ -91,7 +91,6 @@
             // 
             // txtFullName
             // 
-            txtFullName.ForeColor = SystemColors.ActiveCaption;
             txtFullName.Location = new Point(782, 246);
             txtFullName.Margin = new Padding(4, 3, 4, 3);
             txtFullName.Name = "txtFullName";
@@ -101,7 +100,6 @@
             // 
             // txtUsername
             // 
-            txtUsername.ForeColor = SystemColors.ActiveCaption;
             txtUsername.Location = new Point(782, 167);
             txtUsername.Margin = new Padding(4, 3, 4, 3);
             txtUsername.Name = "txtUsername";
@@ -313,7 +311,7 @@
             label5.Name = "label5";
             label5.Size = new Size(86, 23);
             label5.TabIndex = 16;
-            label5.Text = "FullName";
+            label5.Text = "Full Name";
             // 
             // Password
             // 
@@ -328,7 +326,6 @@
             // 
             // cmbRole
             // 
-            cmbRole.ForeColor = SystemColors.ActiveCaption;
             cmbRole.FormattingEnabled = true;
             cmbRole.Location = new Point(782, 324);
             cmbRole.Margin = new Padding(4, 3, 4, 3);
