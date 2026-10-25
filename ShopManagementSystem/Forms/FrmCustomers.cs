@@ -21,7 +21,7 @@ namespace warehouse.NewFolder.Forms
         public FrmCustomers()
         {
             InitializeComponent();
-            UiTheme.StyleButtons(this);
+            UiTheme.Apply(this);
         }
 
         private void FrmCustomers_Load(object sender, EventArgs e)

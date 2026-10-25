@@ -47,12 +47,6 @@
             txtPhone = new TextBox();
             pictureBox2 = new PictureBox();
             pictureBox1 = new PictureBox();
-            label6 = new Label();
-            label7 = new Label();
-            label8 = new Label();
-            label9 = new Label();
-            label10 = new Label();
-            label11 = new Label();
             ((System.ComponentModel.ISupportInitialize)dgvCustomers).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
@@ -72,49 +66,52 @@
             // dgvCustomers
             // 
             dgvCustomers.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvCustomers.Location = new Point(216, 109);
+            dgvCustomers.Location = new Point(21, 112);
             dgvCustomers.Name = "dgvCustomers";
             dgvCustomers.RowHeadersWidth = 51;
-            dgvCustomers.Size = new Size(813, 289);
+            dgvCustomers.Size = new Size(1235, 286);
             dgvCustomers.TabIndex = 1;
             dgvCustomers.CellClick += dgvCustomers_CellClick;
             // 
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(21, 428);
+            label2.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
+            label2.Location = new Point(21, 429);
             label2.Name = "label2";
-            label2.Size = new Size(49, 20);
+            label2.Size = new Size(50, 20);
             label2.TabIndex = 2;
             label2.Text = "Name";
-            // 
+            //
             // label3
-            // 
+            //
             label3.AutoSize = true;
-            label3.Location = new Point(341, 428);
+            label3.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
+            label3.Location = new Point(352, 429);
             label3.Name = "label3";
-            label3.Size = new Size(57, 20);
+            label3.Size = new Size(53, 20);
             label3.TabIndex = 3;
-            label3.Text = "Gender";
-            // 
+            label3.Text = "Phone";
+            //
             // label4
-            // 
+            //
             label4.AutoSize = true;
-            label4.Location = new Point(631, 429);
+            label4.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
+            label4.Location = new Point(637, 429);
             label4.Name = "label4";
             label4.Size = new Size(46, 20);
             label4.TabIndex = 4;
             label4.Text = "Email";
-            // 
+            //
             // label5
-            // 
+            //
             label5.AutoSize = true;
             label5.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
-            label5.Location = new Point(966, 429);
+            label5.Location = new Point(960, 429);
             label5.Name = "label5";
-            label5.Size = new Size(54, 20);
+            label5.Size = new Size(67, 20);
             label5.TabIndex = 5;
-            label5.Text = "Adress";
+            label5.Text = "Address";
             // 
             // txtCustomerName
             // 
@@ -150,9 +147,9 @@
             btnAdd.BackColor = Color.DarkBlue;
             btnAdd.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
             btnAdd.ForeColor = SystemColors.ButtonHighlight;
-            btnAdd.Location = new Point(235, 492);
+            btnAdd.Location = new Point(235, 484);
             btnAdd.Name = "btnAdd";
-            btnAdd.Size = new Size(94, 29);
+            btnAdd.Size = new Size(110, 38);
             btnAdd.TabIndex = 14;
             btnAdd.Text = "ADD";
             btnAdd.UseVisualStyleBackColor = false;
@@ -163,9 +160,9 @@
             btnUpdate.BackColor = Color.DarkBlue;
             btnUpdate.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
             btnUpdate.ForeColor = SystemColors.ButtonHighlight;
-            btnUpdate.Location = new Point(436, 492);
+            btnUpdate.Location = new Point(436, 484);
             btnUpdate.Name = "btnUpdate";
-            btnUpdate.Size = new Size(94, 29);
+            btnUpdate.Size = new Size(110, 38);
             btnUpdate.TabIndex = 15;
             btnUpdate.Text = "UPDATE";
             btnUpdate.UseVisualStyleBackColor = false;
@@ -176,9 +173,9 @@
             btnDelete.BackColor = Color.DarkBlue;
             btnDelete.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
             btnDelete.ForeColor = SystemColors.ButtonHighlight;
-            btnDelete.Location = new Point(656, 492);
+            btnDelete.Location = new Point(656, 484);
             btnDelete.Name = "btnDelete";
-            btnDelete.Size = new Size(94, 29);
+            btnDelete.Size = new Size(110, 38);
             btnDelete.TabIndex = 16;
             btnDelete.Text = "DELETE";
             btnDelete.UseVisualStyleBackColor = false;
@@ -189,9 +186,9 @@
             btnClear.BackColor = Color.DarkBlue;
             btnClear.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
             btnClear.ForeColor = SystemColors.ButtonHighlight;
-            btnClear.Location = new Point(854, 492);
+            btnClear.Location = new Point(854, 484);
             btnClear.Name = "btnClear";
-            btnClear.Size = new Size(94, 29);
+            btnClear.Size = new Size(110, 38);
             btnClear.TabIndex = 17;
             btnClear.Text = "CLEAR";
             btnClear.UseVisualStyleBackColor = false;
@@ -200,9 +197,9 @@
             // btnSearch
             // 
             btnSearch.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
-            btnSearch.Location = new Point(708, 74);
+            btnSearch.Location = new Point(716, 68);
             btnSearch.Name = "btnSearch";
-            btnSearch.Size = new Size(94, 29);
+            btnSearch.Size = new Size(110, 38);
             btnSearch.TabIndex = 18;
             btnSearch.Text = "SEARCH";
             btnSearch.UseVisualStyleBackColor = true;
@@ -213,9 +210,9 @@
             btnLoad.BackColor = Color.DarkBlue;
             btnLoad.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
             btnLoad.ForeColor = SystemColors.ButtonHighlight;
-            btnLoad.Location = new Point(1068, 492);
+            btnLoad.Location = new Point(1068, 484);
             btnLoad.Name = "btnLoad";
-            btnLoad.Size = new Size(94, 29);
+            btnLoad.Size = new Size(110, 38);
             btnLoad.TabIndex = 19;
             btnLoad.Text = "LOAD";
             btnLoad.UseVisualStyleBackColor = false;
@@ -249,64 +246,7 @@
             pictureBox1.TabIndex = 26;
             pictureBox1.TabStop = false;
             pictureBox1.Click += pictureBox1_Click;
-            // 
-            // label6
-            // 
-            label6.AutoSize = true;
-            label6.Location = new Point(28, 433);
-            label6.Name = "label6";
-            label6.Size = new Size(49, 20);
-            label6.TabIndex = 2;
-            label6.Text = "Name";
-            // 
-            // label7
-            // 
-            label7.AutoSize = true;
-            label7.Location = new Point(348, 433);
-            label7.Name = "label7";
-            label7.Size = new Size(57, 20);
-            label7.TabIndex = 3;
-            label7.Text = "Gender";
-            // 
-            // label8
-            // 
-            label8.AutoSize = true;
-            label8.Location = new Point(638, 434);
-            label8.Name = "label8";
-            label8.Size = new Size(46, 20);
-            label8.TabIndex = 4;
-            label8.Text = "Email";
-            // 
-            // label9
-            // 
-            label9.AutoSize = true;
-            label9.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
-            label9.Location = new Point(21, 431);
-            label9.Name = "label9";
-            label9.Size = new Size(50, 20);
-            label9.TabIndex = 2;
-            label9.Text = "Name";
-            // 
-            // label10
-            // 
-            label10.AutoSize = true;
-            label10.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
-            label10.Location = new Point(341, 431);
-            label10.Name = "label10";
-            label10.Size = new Size(59, 20);
-            label10.TabIndex = 3;
-            label10.Text = "Gender";
-            // 
-            // label11
-            // 
-            label11.AutoSize = true;
-            label11.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
-            label11.Location = new Point(631, 432);
-            label11.Name = "label11";
-            label11.Size = new Size(46, 20);
-            label11.TabIndex = 4;
-            label11.Text = "Email";
-            // 
+            //
             // FrmCustomers
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -327,14 +267,8 @@
             Controls.Add(txtEmail);
             Controls.Add(txtCustomerName);
             Controls.Add(label5);
-            Controls.Add(label11);
-            Controls.Add(label8);
-            Controls.Add(label10);
             Controls.Add(label4);
-            Controls.Add(label7);
-            Controls.Add(label9);
             Controls.Add(label3);
-            Controls.Add(label6);
             Controls.Add(label2);
             Controls.Add(dgvCustomers);
             Controls.Add(label1);
@@ -370,11 +304,5 @@
         private TextBox txtPhone;
         private PictureBox pictureBox2;
         private PictureBox pictureBox1;
-        private Label label6;
-        private Label label7;
-        private Label label8;
-        private Label label9;
-        private Label label10;
-        private Label label11;
     }
 }

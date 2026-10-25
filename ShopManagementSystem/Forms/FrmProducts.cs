@@ -17,7 +17,7 @@ namespace warehouse.NewFolder.Forms
         public FrmProducts()
         {
             InitializeComponent();
-            UiTheme.StyleButtons(this);
+            UiTheme.Apply(this);
         }
 
         private void LoadProducts()

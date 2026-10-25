@@ -175,7 +175,7 @@
             label6.Name = "label6";
             label6.Size = new Size(104, 20);
             label6.TabIndex = 12;
-            label6.Text = "Recoder Level";
+            label6.Text = "Reorder Level";
             // 
             // label7
             // 

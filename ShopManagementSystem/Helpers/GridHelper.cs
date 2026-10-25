@@ -13,7 +13,10 @@ namespace ShopManagementSystem.Helpers
             grid.DataSource = items;
 
             if (grid.Columns.Contains(nameof(Entity.Id)))
+            {
                 grid.Columns[nameof(Entity.Id)]!.DisplayIndex = 0;
+                grid.Columns[nameof(Entity.Id)]!.FillWeight = 35; // narrow ID column
+            }
             if (grid.Columns.Contains("Name"))
                 grid.Columns["Name"]!.DisplayIndex = 1;
         }
